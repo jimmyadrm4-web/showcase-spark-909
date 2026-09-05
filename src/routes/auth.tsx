@@ -56,7 +56,10 @@ function AuthPage() {
         },
       });
       setLoading(false);
-      if (error) return toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       if (!data.session) {
         setPendingEmail(email);
         return;
@@ -67,7 +70,10 @@ function AuthPage() {
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) return toast.error("Identifiants incorrects.");
+    if (error) {
+      toast.error("Identifiants incorrects.");
+      return;
+    }
     navigate({ to: "/" });
   }
 

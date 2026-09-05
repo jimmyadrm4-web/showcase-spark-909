@@ -11,8 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedMesDevisRouteImport } from './routes/_authenticated/mes-devis'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminDevisRouteImport } from './routes/admin/devis'
+import { Route as AdminProduitsRouteImport } from './routes/admin/produits'
+import { Route as AdminUtilisateursRouteImport } from './routes/admin/utilisateurs'
 import { Route as ProduitsIndexRouteImport } from './routes/produits/index'
 import { Route as ProduitsIdRouteImport } from './routes/produits/$id'
 
@@ -25,6 +30,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -34,6 +44,26 @@ const AuthenticatedMesDevisRoute = AuthenticatedMesDevisRouteImport.update({
   id: '/mes-devis',
   path: '/mes-devis',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDevisRoute = AdminDevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminProduitsRoute = AdminProduitsRouteImport.update({
+  id: '/produits',
+  path: '/produits',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminUtilisateursRoute = AdminUtilisateursRouteImport.update({
+  id: '/utilisateurs',
+  path: '/utilisateurs',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const ProduitsIndexRoute = ProduitsIndexRouteImport.update({
   id: '/produits/',
@@ -48,45 +78,84 @@ const ProduitsIdRoute = ProduitsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/admin/devis': typeof AdminDevisRoute
+  '/admin/produits': typeof AdminProduitsRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/produits/$id': typeof ProduitsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/produits/': typeof ProduitsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/admin/devis': typeof AdminDevisRoute
+  '/admin/produits': typeof AdminProduitsRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/produits/$id': typeof ProduitsIdRoute
+  '/admin': typeof AdminIndexRoute
   '/produits': typeof ProduitsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/admin/devis': typeof AdminDevisRoute
+  '/admin/produits': typeof AdminProduitsRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/produits/$id': typeof ProduitsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/produits/': typeof ProduitsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/mes-devis' | '/produits/$id' | '/produits/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/auth'
+    | '/mes-devis'
+    | '/admin/devis'
+    | '/admin/produits'
+    | '/admin/utilisateurs'
+    | '/produits/$id'
+    | '/admin/'
+    | '/produits/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/mes-devis' | '/produits/$id' | '/produits'
+  to:
+    | '/'
+    | '/auth'
+    | '/mes-devis'
+    | '/admin/devis'
+    | '/admin/produits'
+    | '/admin/utilisateurs'
+    | '/produits/$id'
+    | '/admin'
+    | '/produits'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin'
     | '/auth'
     | '/_authenticated/mes-devis'
+    | '/admin/devis'
+    | '/admin/produits'
+    | '/admin/utilisateurs'
     | '/produits/$id'
+    | '/admin/'
     | '/produits/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ProduitsIdRoute: typeof ProduitsIdRoute
   ProduitsIndexRoute: typeof ProduitsIndexRoute
@@ -108,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -121,6 +197,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/mes-devis'
       preLoaderRoute: typeof AuthenticatedMesDevisRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/devis': {
+      id: '/admin/devis'
+      path: '/devis'
+      fullPath: '/admin/devis'
+      preLoaderRoute: typeof AdminDevisRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/produits': {
+      id: '/admin/produits'
+      path: '/produits'
+      fullPath: '/admin/produits'
+      preLoaderRoute: typeof AdminProduitsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/utilisateurs': {
+      id: '/admin/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/admin/utilisateurs'
+      preLoaderRoute: typeof AdminUtilisateursRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/produits/': {
       id: '/produits/'
@@ -150,9 +254,28 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AdminRouteRouteChildren {
+  AdminDevisRoute: typeof AdminDevisRoute
+  AdminProduitsRoute: typeof AdminProduitsRoute
+  AdminUtilisateursRoute: typeof AdminUtilisateursRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminDevisRoute: AdminDevisRoute,
+  AdminProduitsRoute: AdminProduitsRoute,
+  AdminUtilisateursRoute: AdminUtilisateursRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ProduitsIdRoute: ProduitsIdRoute,
   ProduitsIndexRoute: ProduitsIndexRoute,

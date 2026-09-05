@@ -10,42 +10,85 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedMesDevisRouteImport } from './routes/_authenticated/mes-devis'
 import { Route as ProduitsIndexRouteImport } from './routes/produits/index'
+import { Route as ProduitsIdRouteImport } from './routes/produits/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMesDevisRoute = AuthenticatedMesDevisRouteImport.update({
+  id: '/mes-devis',
+  path: '/mes-devis',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ProduitsIndexRoute = ProduitsIndexRouteImport.update({
   id: '/produits/',
   path: '/produits/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProduitsIdRoute = ProduitsIdRouteImport.update({
+  id: '/produits/$id',
+  path: '/produits/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/produits/$id': typeof ProduitsIdRoute
   '/produits/': typeof ProduitsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/produits/$id': typeof ProduitsIdRoute
   '/produits': typeof ProduitsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/mes-devis': typeof AuthenticatedMesDevisRoute
+  '/produits/$id': typeof ProduitsIdRoute
   '/produits/': typeof ProduitsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/produits/'
+  fullPaths: '/' | '/auth' | '/mes-devis' | '/produits/$id' | '/produits/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/produits'
-  id: '__root__' | '/' | '/produits/'
+  to: '/' | '/auth' | '/mes-devis' | '/produits/$id' | '/produits'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/mes-devis'
+    | '/produits/$id'
+    | '/produits/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ProduitsIdRoute: typeof ProduitsIdRoute
   ProduitsIndexRoute: typeof ProduitsIndexRoute
 }
 
@@ -58,6 +101,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/mes-devis': {
+      id: '/_authenticated/mes-devis'
+      path: '/mes-devis'
+      fullPath: '/mes-devis'
+      preLoaderRoute: typeof AuthenticatedMesDevisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/produits/': {
       id: '/produits/'
       path: '/produits'
@@ -65,11 +129,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProduitsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/produits/$id': {
+      id: '/produits/$id'
+      path: '/produits/$id'
+      fullPath: '/produits/$id'
+      preLoaderRoute: typeof ProduitsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMesDevisRoute: typeof AuthenticatedMesDevisRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMesDevisRoute: AuthenticatedMesDevisRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ProduitsIdRoute: ProduitsIdRoute,
   ProduitsIndexRoute: ProduitsIndexRoute,
 }
 export const routeTree = rootRouteImport

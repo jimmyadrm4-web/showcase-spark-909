@@ -33,14 +33,16 @@ export function SiteFooter() {
         <div className="text-sm">
           <p className="font-medium">Nous joindre</p>
           <ul className="mt-3 space-y-2 text-muted-foreground">
-            <li>contact@optiquepro.example</li>
-            <li>Lyon, France</li>
+            <li>
+              <a href="mailto:jimmyadrm4@gmail.com" className="hover:text-foreground">jimmyadrm4@gmail.com</a>
+            </li>
+            <li>Antananarivo, Madagascar</li>
             <li>Du lundi au vendredi, 9h – 18h</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-border/70 px-5 py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} OptiquePro. Coordonnées de démonstration.
+        © {new Date().getFullYear()} OptiquePro. 
       </div>
     </footer>
   );

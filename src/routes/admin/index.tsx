@@ -103,7 +103,6 @@ function AdminDashboard() {
   const doneQuotes = quotes?.filter((q) => q.status === "termine").length ?? 0;
   const totalUsers = users?.length ?? 0;
 
-  // Valeur indicative du pipeline (somme des devis en attente/envoyés, base prix catalogue)
   const recentQuotes = quotes?.slice(0, 8) ?? [];
 
   const statusDist = [
